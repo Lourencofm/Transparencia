@@ -1,5 +1,5 @@
 async function buscarDeputados() {
-    const url = 'https://dadosabertos.camara.leg.br/api/v2/deputados?siglaUf=ES&itens=10';
+    const url = 'https://dadosabertos.camara.leg.br/api/v2/deputados?itens=10&ordem=ASC&ordenarPor=nome';
 
     const resposta = await fetch(url, {
         headers: {
@@ -21,6 +21,7 @@ async function buscarDeputados() {
         const imagem = document.createElement('img');
         imagem.src = deputado.urlFoto;
         imagem.alt = `Foto de ${deputado.nome}`;
+        imagem.loading = 'lazy';
 
         const nome = document.createElement('h2');
         nome.textContent = deputado.nome;
@@ -39,10 +40,12 @@ async function buscarDeputados() {
     async function exibirDeputados() {
         const deputados = await buscarDeputados();
 
-        const listaDeputados = document.getElementById('deputados');
+        const listaDeputados = document.querySelector('#deputados');
 
         deputados.forEach(deputado => {
             const cartao = criarCartao(deputado);
             listaDeputados.appendChild(cartao);
         });
     }
+
+    exibirDeputados()
